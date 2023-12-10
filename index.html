@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ID Number Validation</title>
+  <style>
+    /* CSS样式可以在这里定义 */
+  </style>
+</head>
+<body>
+  <h1>ID Number Validation</h1>
+  <label for="idInput">请输入身份证号码，用星号 (*) 替代未知数字：</label>
+  <input type="text" id="idInput" />
+  <button onclick="validateID()">验证</button>
+  <p id="result"></p>
+
+  <script>
+    function is_valid_id_number(n) {
+      if (n.length !== 18) {
+        return false;
+      }
+      var factors = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
+      var id_remainders = ['1', '0', 'x', '9', '8', '7', '6', '5', '4', '3', '2'];
+      var total_sum = 0;
+      for (var i = 0; i < 17; i++) {
+        total_sum += parseInt(n[i]) * factors[i];
+      }
+      var remainder = total_sum % 11;
+      return id_remainders[remainder] === n[17];
+    }
+
+    function validateID() {
+      var idInput = document.getElementById("idInput").value;
+      var validIDs = [];
+
+      if (idInput.length !== 18) {
+        validIDs.push("请输入18位身份证号码，并用星号 (*) 替代缺失的数字。");
+      } else {
+        var countAsterisks = idInput.split("*").length - 1;
+        if (countAsterisks > 18) {
+          validIDs.push("星号的数量不能超过18个。");
+        } else if (countAsterisks === 0) {
+          validIDs.push("没有缺失的数字。");
+        } else {
+          var city_code = idInput.substring(0, 6);
+          var birth_year = idInput.substring(6, 10);
+          var birth_month = idInput.substring(10, 12);
+          var birth_day = idInput.substring(12, 14);
+          var tail_digits = idInput.substring(14, 18);
+
+          // 判断身份证号码的有效性
+          if (is_valid_id_number(idInput)) {
+            validIDs.push("验证结果：有效的身份证号码");
+          } else {
+            validIDs.push("验证结果：无效的身份证号码");
+          }
+        }
+      }
+
+      var resultElement = document.getElementById("result");
+      resultElement.innerHTML = validIDs.join("<br>");
+    }
+  </script>
+</body>
+</html>
