@@ -2,3 +2,4 @@
 *.spec
 /build
 /dist
+/.vscode
