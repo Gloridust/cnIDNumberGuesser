@@ -1,8 +1,8 @@
 import time
-import threading
 import re
 import psutil
 import os
+import threading
 
 thread_count = 8
 
