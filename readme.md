@@ -10,7 +10,7 @@
 ![GitHub issues](https://img.shields.io/github/issues/Gloridust/cnIDNumberGuesser?style=flat-square)
 ![GitHub issues closed](https://img.shields.io/github/issues-closed/Gloridust/cnIDNumberGuesser?style=flat-square)  
 
-此文档的语言为简体中文，仅针对中文用户。For English? [Please click here](https://github.com/Gloridust/cnIDNumberGuesser/README_en.md).
+此文档的语言为简体中文，仅针对中文用户。For English? [Please click here](readme_en.md).
 
 ## 简介
 
