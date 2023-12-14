@@ -13,7 +13,18 @@
         <input type="text" id="idInput" placeholder="请输入身份ID">
         <button onclick="validateAndGuessID()">GuessID</button>
         <button onclick="downloadResults()">Download</button>
-        <p id="result"></p>
+        <p id="result">
+        <h2 id="简介">简介</h2>
+        <p>这是一个用于推测并补全中国大陆身份证号码的项目，在您不记得身份证号的某一部分或者证件号码某一部分缺失时，可以用该工具补全身份证号码。该工具提供 Python 和 Web 两个版本，你可以选择在本地用 Python
+            运行，或者部署在服务器上通过前端 JS 代码实现。注意：该项目仅用于学术研究目的。
+            <strong>请遵守当地法律，不要用于非法用途。若不甚误入歧途，一切后果与作者无关</strong>
+        </p>
+        <p>访问本站即可开始使用。同样地，输入 18 位身份证号码，待补全项用星号&quot;*&quot;代替。</p>
+        <p>点击“GuessID”运行。得出结果后，结果会显示在下方。你也可以点击“Download”将结果保存在 &#39;guessedIDs.txt&#39; 并下载到本地。</p>
+        <p>项目源码：
+            <a href="https://github.com/Gloridust/cnIDNumberGuesser">https://github.com/Gloridust/cnIDNumberGuesser</a>
+        </p>
+        </p>
     </div>
     <script src="script.js"></script>
 </body>
