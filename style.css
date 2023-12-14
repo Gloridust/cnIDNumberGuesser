@@ -1,38 +1,49 @@
-
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    color: #333;
+    font-family: 'Roboto', sans-serif;
+    background-color: #1a1a1a; /* 深灰色 */
+    color: #e0e0e0; /* 浅灰色 */
     padding: 20px;
 }
 
+.container {
+    max-width: 600px;
+    margin: auto;
+    text-align: center;
+}
+
 h1 {
-    color: #0055a4; /* Blue */
+    color: #4caf50; /* 绿色 */
+    font-size: 2em;
+    margin-bottom: 20px;
 }
 
 input[type='text'] {
-    border: 2px solid #0055a4; /* Blue */
+    border: 2px solid #4caf50; /* 绿色 */
     padding: 10px;
-    width: 300px;
+    width: 100%;
+    max-width: 300px;
     border-radius: 5px;
+    color: #333;
+    background-color: #ffffff;
 }
 
 button {
-    background-color: #d50000; /* Red */
+    background-color: #2196f3; /* 蓝色 */
     color: white;
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
-    margin-top: 10px;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #b20000; /* Darker Red */
+    background-color: #0d47a1; /* 更深的蓝色 */
 }
 
-p {
+p#result {
     margin-top: 20px;
-    color: #0055a4; /* Blue */
+    font-size: 1.2em;
 }
