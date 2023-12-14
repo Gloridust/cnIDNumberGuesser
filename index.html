@@ -1,29 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-    <title>身份证号码验证</title>
+    <meta charset="UTF-8">
+    <title>GuessID</title>
+    <link rel="stylesheet" href="style.css">
+
 </head>
 <body>
-    <h2>请输入身份证号码：</h2>
-    <textarea id="idInput" rows="4" cols="50"></textarea><br>
-    <button onclick="submitId()">提交</button>
+    <h1>身份证号码验证</h1>
+    <input type="text" id="idInput" placeholder="请输入身份ID">
+    <button onclick="validateAndGuessID()">验证</button> 
     <p id="result"></p>
 
-    <script>
-        function submitId() {
-            var idNumber = document.getElementById("idInput").value;
-            fetch('/process_id', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: 'idNumber=' + idNumber
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("result").innerText = '验证结果: ' + data.result;
-            });
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

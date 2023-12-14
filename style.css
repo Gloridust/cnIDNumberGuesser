@@ -1,0 +1,38 @@
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+    padding: 20px;
+}
+
+h1 {
+    color: #0055a4; /* Blue */
+}
+
+input[type='text'] {
+    border: 2px solid #0055a4; /* Blue */
+    padding: 10px;
+    width: 300px;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #d50000; /* Red */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #b20000; /* Darker Red */
+}
+
+p {
+    margin-top: 20px;
+    color: #0055a4; /* Blue */
+}
