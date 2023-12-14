@@ -66,3 +66,19 @@ function guessID(id) {
 
     return possibleIDs.filter(isIDValid);
 }
+
+// 下载结果功能
+function downloadResults() {
+    const resultElement = document.getElementById('result');
+    const text = resultElement.textContent;
+    const blob = new Blob([text], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'guessedIDs.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
