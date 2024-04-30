@@ -17,6 +17,8 @@ This document is in English.For Simplified Chinese? [Please click here](readme.m
 
 This project is designed to guess and complete Chinese mainland ID numbers. It is useful when you don't remember part of your ID number or if a part of the document number is missing. The tool is available in both Python and Web versions. You can choose to run it locally with Python or deploy it on a server and implement it through front-end JS code. Note: This project is intended only for academic research purposes. **Please comply with local laws and do not use it for illegal purposes. The author is not responsible for any misuse or consequences thereof.**
 
+**NOTE:** The C/C++ version is temporarily unavailable. If you are good at C/C++, you can submit a PR to help us improve it together.
+
 ## Deployment and Usage
 
 ### Python
