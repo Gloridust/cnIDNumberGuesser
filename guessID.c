@@ -36,25 +36,33 @@ char** read_city_codes(const char* filename) {
         exit(1);
     }
 
-    // Count the number of lines in the file
+    // Count the number of non-empty lines in the file
     int line_count = 0;
     char buffer[10];
     while (fgets(buffer, sizeof(buffer), file) != NULL) {
-        line_count++;
+        if (buffer[0] != '\n') {
+            line_count++;
+        }
     }
     rewind(file);
 
     // Allocate memory for city codes
     char** city_codes = malloc(line_count * sizeof(char*));
 
-    // Read city codes from file
-    for (int i = 0; i < line_count; ++i) {
-        city_codes[i] = malloc(7 * sizeof(char)); // assuming city code length is 6 characters
-        fgets(city_codes[i], 7, file);
-        city_codes[i][strcspn(city_codes[i], "\n")] = 0; // Remove newline character
+    // Read non-empty city codes from file
+    int index = 0;
+    while (fgets(buffer, sizeof(buffer), file) != NULL) {
+        if (buffer[0] != '\n') {
+            city_codes[index] = malloc(7 * sizeof(char)); // assuming city code length is 6 characters
+            sscanf(buffer, "%s", city_codes[index]); // Read only the first string (city code)
+            index++;
+        }
     }
 
     fclose(file);
+    // for (int i = 0; i < line_count; ++i) {
+    //     printf("%s\n", city_codes[i]);
+    // }  
     return city_codes;
 }
 
@@ -190,7 +198,7 @@ int main() {
     // Process birth day options
     char*** birth_day_options = malloc(birth_month_count * sizeof(char**));
     int* birth_day_counts = malloc(birth_month_count * sizeof(int));
-    printf(">>> 有效的出生日期:\n");
+    printf(">>> 有效的出生日期:");
     for (int i = 0; i < birth_month_count; ++i) {
         if (strcmp(birth_day, "**") == 0) {
             birth_day_counts[i] = sizeof(year_days[i]) / sizeof(year_days[i][0]);
