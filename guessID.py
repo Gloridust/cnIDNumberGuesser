@@ -200,3 +200,4 @@ print('>>> 耗时:', time.time() - start_time)
 result = "\n".join(cache)
 with open('resultID.txt', 'a') as f:
     f.write(result)
+print(result)
