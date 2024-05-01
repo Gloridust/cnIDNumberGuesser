@@ -4,6 +4,7 @@
 #include <time.h>
 
 #define THREAD_COUNT 8
+#define city_count 3207
 
 char* id_input;
 
@@ -68,7 +69,7 @@ char** read_city_codes(const char* filename) {
 
 int main() {
     char** city_codes = read_city_codes("citycodes.txt");
-    const int city_count = sizeof(city_codes) / sizeof(city_codes[0]);
+    // const int city_count = sizeof(city_codes) / sizeof(city_codes[0]);
 
     id_input = malloc(19 * sizeof(char)); // Allocate memory for ID input
     printf("请输入身份证号码，用星号 (*) 替代未知数字：");
