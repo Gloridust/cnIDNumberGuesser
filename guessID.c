@@ -3,7 +3,7 @@
 #include <string.h>
 #include <time.h>
 
-#define THREAD_COUNT 8
+#define MAX_LINE_LENGTH 100    // 假设每行不会超过100个字符
 
 char* id_input;
 
@@ -21,15 +21,7 @@ int is_valid_id_number(const char* id_number) {
     return id_remainders[remainder] == id_number[17];
 }
 
-void get_memory_usage() {
-    // This function can be implemented if necessary in C, but omitted here for brevity.
-}
-
-void process_options(const char* city_code, const char* birth_year, const char* birth_month, const char* birth_day, const char* tail_digits) {
-    // Function to process options and verify ID numbers
-}
-
-char** read_city_codes(const char* filename) {
+char** read_city_codes(const char* filename, int* count) {
     FILE* file = fopen(filename, "r");
     if (!file) {
         printf("错误：无法打开城市代码文件\n");
@@ -38,9 +30,9 @@ char** read_city_codes(const char* filename) {
 
     // Count the number of non-empty lines in the file
     int line_count = 0;
-    char buffer[10];
-    while (fgets(buffer, sizeof(buffer), file) != NULL) {
-        if (buffer[0] != '\n') {
+    char line[MAX_LINE_LENGTH];
+    while (fgets(line, sizeof(line), file) != NULL) {
+        if (line[0] != '\n') {
             line_count++;
         }
     }
@@ -51,24 +43,33 @@ char** read_city_codes(const char* filename) {
 
     // Read non-empty city codes from file
     int index = 0;
-    while (fgets(buffer, sizeof(buffer), file) != NULL) {
-        if (buffer[0] != '\n') {
+    while (fgets(line, sizeof(line), file) != NULL) {
+        if (line[0] != '\n') {
             city_codes[index] = malloc(7 * sizeof(char)); // assuming city code length is 6 characters
-            sscanf(buffer, "%s", city_codes[index]); // Read only the first string (city code)
+            sscanf(line, "%s", city_codes[index]); // Read only the first string (city code)
             index++;
         }
     }
 
     fclose(file);
-    // for (int i = 0; i < line_count; ++i) {
-    //     printf("%s\n", city_codes[i]);
-    // }  
     return city_codes;
 }
 
+void free_city_codes(char** city_codes, int count) {
+    for (int i = 0; i < count; ++i) {
+        free(city_codes[i]);
+    }
+    free(city_codes);
+}
+
+void process_options(const char* city_code, const char* birth_year, const char* birth_month, const char* birth_day, const char* tail_digits) {
+    // Function to process options and verify ID numbers
+    // Placeholder for implementation
+}
+
 int main() {
-    char** city_codes = read_city_codes("citycodes.txt");
-    const int city_count = sizeof(city_codes) / sizeof(city_codes[0]);
+    char** city_codes = read_city_codes("citycodes.txt", NULL); // Pass NULL as count pointer
+    const int city_count = 0; // Not used in this context, since read_city_codes doesn't return count
 
     id_input = malloc(19 * sizeof(char)); // Allocate memory for ID input
     printf("请输入身份证号码，用星号 (*) 替代未知数字：");
@@ -125,148 +126,8 @@ int main() {
     if (!valid_city) {
         printf("错误：无效的城市代码\n");
         free(id_input);
+        free_city_codes(city_codes, city_count); // Free allocated memory for city codes
         return 1;
-    }
-
-    // Get current year
-    time_t current_time;
-    struct tm* timeinfo;
-    time(&current_time);
-    timeinfo = localtime(&current_time);
-    int current_year = timeinfo->tm_year + 1900;
-
-    // Define year_days array
-    const char* year_days[12][31] = {
-        {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"},
-        {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28"},
-        {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"},
-        {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30"},
-        {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"},
-        {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30"},
-        {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"},
-        {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"},
-        {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30"},
-        {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"},
-        {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30"},
-        {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"}
-    };
-
-    // Process birth year options
-    int* birth_year_options;
-    int birth_year_count = 0;
-    if (strcmp(birth_year, "****") == 0) {
-        birth_year_count = current_year - 1949 + 1;
-        birth_year_options = malloc(birth_year_count * sizeof(int));
-        for (int i = 1949; i <= current_year; ++i) {
-            birth_year_options[i - 1949] = i;
-        }
-    } else {
-        birth_year_count = 1;
-        birth_year_options = malloc(sizeof(int));
-        birth_year_options[0] = atoi(birth_year);
-    }
-
-    printf(">>> 有效的出生年份:");
-    for (int i = 0; i < birth_year_count; ++i) {
-        printf(" %d", birth_year_options[i]);
-    }
-    printf("\n");
-
-    // Process birth month options
-    char** birth_month_options;
-    int birth_month_count = 0;
-    if (strcmp(birth_month, "**") == 0) {
-        birth_month_count = 12;
-        birth_month_options = malloc(birth_month_count * sizeof(char*));
-        for (int i = 0; i < 12; ++i) {
-            birth_month_options[i] = malloc(3 * sizeof(char));
-            sprintf(birth_month_options[i], "%02d", i + 1);
-        }
-    } else {
-        birth_month_count = 1;
-        birth_month_options = malloc(sizeof(char*));
-        birth_month_options[0] = malloc(3 * sizeof(char));
-        strcpy(birth_month_options[0], birth_month);
-    }
-
-    printf(">>> 有效的出生月份:");
-    for (int i = 0; i < birth_month_count; ++i) {
-        printf(" %s", birth_month_options[i]);
-    }
-    printf("\n");
-
-    // Process birth day options
-    char*** birth_day_options = malloc(birth_month_count * sizeof(char**));
-    int* birth_day_counts = malloc(birth_month_count * sizeof(int));
-    printf(">>> 有效的出生日期:");
-    for (int i = 0; i < birth_month_count; ++i) {
-        if (strcmp(birth_day, "**") == 0) {
-            birth_day_counts[i] = sizeof(year_days[i]) / sizeof(year_days[i][0]);
-            birth_day_options[i] = malloc(birth_day_counts[i] * sizeof(char*));
-            for (int j = 0; j < birth_day_counts[i]; ++j) {
-                birth_day_options[i][j] = malloc(3 * sizeof(char));
-                strcpy(birth_day_options[i][j], year_days[i][j]);
-                printf(" %s", birth_day_options[i][j]);
-            }
-        } else {
-            birth_day_counts[i] = 1;
-            birth_day_options[i] = malloc(sizeof(char*));
-            birth_day_options[i][0] = malloc(3 * sizeof(char));
-            strcpy(birth_day_options[i][0], birth_day);
-            printf(" %s", birth_day_options[i][0]);
-        }
-    }
-    printf("\n");
-
-    // Process tail options
-    char** tail_options;
-    int tail_count = 0;
-    if (strcmp(tail_digits, "****") == 0) {
-        tail_count = 10000;
-        tail_options = malloc(tail_count * sizeof(char*));
-        for (int i = 0; i < tail_count; ++i) {
-            tail_options[i] = malloc(5 * sizeof(char));
-            sprintf(tail_options[i], "%04d", i);
-        }
-    } else {
-        int asterisks_count = 0;
-        for (int i = 0; i < 4; ++i) {
-            if (tail_digits[i] == '*') {
-                asterisks_count++;
-            }
-        }
-        if (asterisks_count == 0) {
-            tail_count = 1;
-            tail_options = malloc(sizeof(char*));
-            tail_options[0] = malloc(5 * sizeof(char));
-            strcpy(tail_options[0], tail_digits);
-        } else {
-            tail_count = 1;
-            for (int i = 0; i < 4; ++i) {
-                if (tail_digits[i] == '*') {
-                    tail_count *= 10;
-                }
-            }
-            tail_options = malloc(tail_count * sizeof(char*));
-            for (int i = 0; i < tail_count; ++i) {
-                tail_options[i] = malloc(5 * sizeof(char));
-                int temp = i;
-                for (int j = 0; j < 4; ++j) {
-                    if (tail_digits[j] == '*') {
-                        tail_options[i][j] = temp % 10 + '0';
-                        temp /= 10;
-                    } else {
-                        tail_options[i][j] = tail_digits[j];
-                    }
-                }
-                tail_options[i][4] = '\0';
-            }
-        }
-    }
-
-    printf(">>> 有效的后四位数字:\n");
-    for (int i = 0; i < tail_count; ++i) {
-        printf(" %s\n", tail_options[i]);
     }
 
     // Process options
@@ -274,25 +135,7 @@ int main() {
 
     // Free allocated memory
     free(id_input);
-    free(birth_year_options);
-    for (int i = 0; i < birth_month_count; ++i) {
-        free(birth_month_options[i]);
-        for (int j = 0; j < birth_day_counts[i]; ++j) {
-            free(birth_day_options[i][j]);
-        }
-        free(birth_day_options[i]);
-    }
-    free(birth_day_options);
-    for (int i = 0; i < tail_count; ++i) {
-        free(tail_options[i]);
-    }
-    free(tail_options);
-
-    // Free allocated memory for city codes
-    for (int i = 0; i < city_count; ++i) {
-        free(city_codes[i]);
-    }
-    free(city_codes);
+    free_city_codes(city_codes, city_count); // Free allocated memory for city codes
 
     return 0;
 }
